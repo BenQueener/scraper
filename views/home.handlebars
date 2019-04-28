@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="col-md-12 jumbotron">
+        <div class="text-center">
+            <h1> All The News Thats Fit To Scrape.</h1>
+        </div>
+
+    </div>
+    <div class="col-md-12">
+            {{#each article}}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>{{this.title}}</h4>
+                </div>
+                <div class="panel-body">
+                    <p> {{this.summary}}</p>
+                    <a href={{this.link}} target="_blank">{{this.link}}</a>
+                    <br><br>
+                    <button type="button" class="btn btn-success save" data-id={{this._id}}>Save</button>
+                </div>
+            </div>
+            {{/each}}
+    </div>
+</div>
