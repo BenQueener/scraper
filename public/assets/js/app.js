@@ -22,11 +22,12 @@ $(".save").on("click", function() {
       method: "POST",
       url: "/articles/save/" + thisId
   }).done(function(data) {
-      window.location = "/"
+    console.log(data);
+    //  window.location = "/"
   })
 });
 
-//Handle Delete Article button
+//Delete Article button
 $(".delete").on("click", function() {
   var thisId = $(this).attr("data-id");
   $.ajax({
@@ -37,7 +38,7 @@ $(".delete").on("click", function() {
   })
 });
 
-//Handle Save Note button
+//Save Note button
 $(".saveNote").on("click", function() {
   var thisId = $(this).attr("data-id");
   if (!$("#noteText" + thisId).val()) {
@@ -47,7 +48,7 @@ $(".saveNote").on("click", function() {
           method: "POST",
           url: "/notes/save/" + thisId,
           data: {
-            text: $("#noteText" + thisId).val()
+            body: $("#noteText" + thisId).val()
           }
         }).done(function(data) {
             // Log the response
@@ -60,7 +61,7 @@ $(".saveNote").on("click", function() {
   }
 });
 
-//Handle Delete Note button
+//Delete Note button
 $(".deleteNote").on("click", function() {
   var noteId = $(this).attr("data-note-id");
   var articleId = $(this).attr("data-article-id");

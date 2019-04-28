@@ -16,7 +16,6 @@ var PORT = process.env.PORT || 3000;
 var app = express();
 
 // Configure middleware
-
 // Use morgan logger for logging requests
 app.use(logger("dev"));
 // Parse request body as JSON
@@ -88,9 +87,10 @@ app.get("/scrape", function (req, res) {
 //===================================GET "/saved"=========================================
 //Get att the saved articles
 app.get("/saved", function (req, res) {
-  db.Article.find({ "saved": true })
-  .populate("notes")
-  .then(function (error, articles) {
+  db.Article.find({ saved: true })
+ // .populate("notes")
+  .then(function (articles) {
+    console.log(articles);
     var hbsObject = {
       article: articles
     };
@@ -134,7 +134,8 @@ app.get("/articles/:id", function (req, res) {
 //==================================="POST /articles/save/:id"=========================================
 // Route alter the article entry to indicate that it is "saved"
 app.post("/articles/save/:id", function (req, res) {
-  db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: "true", notes: [] },{new:true})
+  console.log("save route hit");
+  db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: true, notes: [] },{new:true})
     .then(function (dbArticle) {
       res.json(dbArticle);
     })
@@ -150,7 +151,7 @@ app.get("/", function (req, res) {
     var hbsObject = {
       article: data
     };
-    console.log(hbsObject);
+    //console.log(hbsObject);
     res.render("home", hbsObject);
   });
 });
@@ -176,7 +177,7 @@ app.post("/notes/save/:id", function (req, res) {
       // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
       // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
       // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-      return db.Article.findOneAndUpdate({ "_id": req.params.id }, { $push: { "note": dbNote._id } }, { new: true });
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { notes: dbNote._id } }, { new: true });
     })
     .then(function (dbArticle) {
       // If we were able to successfully update an Article, send it back to the client
