@@ -68,7 +68,6 @@ $(".deleteNote").on("click", function() {
   $.ajax({
       method: "DELETE",
       url: "/notes/delete/" + noteId + "/" + articleId
-      console.log(url);
   }).done(function(data) {
       console.log(data)
       $(".modalNote").modal("hide");
