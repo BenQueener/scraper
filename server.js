@@ -168,7 +168,7 @@ app.post("/articles/delete/:id", function (req, res) {
     });
 });
 
-//========================================POST "/articles/save/:id"===================================================
+//========================================POST "/notes/save/:id"===================================================
 // Route for saving/updating an Article's associated Note
 app.post("/notes/save/:id", function (req, res) {
   // Create a new note and pass the req.body to the entry
@@ -179,9 +179,9 @@ app.post("/notes/save/:id", function (req, res) {
       // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
       return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { notes: dbNote._id } }, { new: true });
     })
-    .then(function (dbArticle) {
-      // If we were able to successfully update an Article, send it back to the client
-      res.json(dbArticle);
+    .then(function (dbNote) {
+      // If we were able to successfully update a note, send it back to the client
+      res.json(dbNote);
     })
     .catch(function (err) {
       // If an error occurred, send it to the client
@@ -201,18 +201,18 @@ app.delete("/notes/delete/:note_id/:article_id", function (req, res) {
         console.log(err);
         res.send(err);
       }
-      else {
-        Article.findOneAndUpdate({ "_id": req.params.article_id }, { $pull: { "notes": req.params.note_id } }, { new: true })
-          .then(function (err) {
-            if (err) {
-              console.log(err);
-              res.send(err);
-            }
-            else {
-              res.send("Note Deleted");
-            }
-          });
-      }
+      // else {
+      //   Article.findOneAndUpdate({ "_id": req.params.article_id }, { $pull: { "notes": req.params.note_id } }, { new: true })
+      //     .then(function (err) {
+      //       if (err) {
+      //         console.log(err);
+      //         res.send(err);
+      //       }
+      //       else {
+      //         res.send("Note Deleted");
+      //       }
+      //     });
+      // }
     });
 });
 
